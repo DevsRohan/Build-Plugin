@@ -1,0 +1,1260 @@
+/**
+ * WhatsApp Order Notifier - Premium Admin Styles
+ * Silicon Valley SaaS-quality UI with glassmorphism, dark mode, smooth animations
+ *
+ * @package suspended_Order_Notifier
+ * @since 1.0.0
+ */
+
+/* ============================================
+   CSS Custom Properties (Design Tokens)
+   ============================================ */
+:root {
+    /* Colors */
+    --won-primary: #25D366;
+    --won-primary-dark: #128C7E;
+    --won-primary-light: #DCF8C6;
+    --won-primary-gradient: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+
+    --won-success: #10B981;
+    --won-warning: #F59E0B;
+    --won-danger: #EF4444;
+    --won-info: #3B82F6;
+
+    /* Neutrals */
+    --won-bg: #F8FAFC;
+    --won-bg-card: #FFFFFF;
+    --won-bg-hover: #F1F5F9;
+    --won-border: #E2E8F0;
+    --won-border-focus: #25D366;
+
+    --won-text: #1E293B;
+    --won-text-secondary: #64748B;
+    --won-text-muted: #94A3B8;
+
+    /* Shadows */
+    --won-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --won-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+    --won-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --won-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --won-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+    /* Glass */
+    --won-glass-bg: rgba(255, 255, 255, 0.8);
+    --won-glass-border: rgba(255, 255, 255, 0.3);
+    --won-glass-blur: 12px;
+
+    /* Spacing */
+    --won-space-xs: 4px;
+    --won-space-sm: 8px;
+    --won-space-md: 16px;
+    --won-space-lg: 24px;
+    --won-space-xl: 32px;
+    --won-space-2xl: 48px;
+
+    /* Typography */
+    --won-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --won-font-mono: 'SF Mono', 'Fira Code', 'Fira Mono', Menlo, Consolas, monospace;
+
+    /* Border Radius */
+    --won-radius-sm: 6px;
+    --won-radius: 8px;
+    --won-radius-md: 12px;
+    --won-radius-lg: 16px;
+    --won-radius-xl: 20px;
+    --won-radius-full: 9999px;
+
+    /* Transitions */
+    --won-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --won-transition-slow: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================
+   Dark Mode
+   ============================================ */
+.won-dark-mode,
+@media (prefers-color-scheme: dark) {
+    .won-app[data-theme="auto"] {
+        --won-bg: #0F172A;
+        --won-bg-card: #1E293B;
+        --won-bg-hover: #334155;
+        --won-border: #334155;
+        --won-text: #F1F5F9;
+        --won-text-secondary: #94A3B8;
+        --won-text-muted: #64748B;
+        --won-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+        --won-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        --won-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+        --won-glass-bg: rgba(30, 41, 59, 0.8);
+        --won-glass-border: rgba(51, 65, 85, 0.5);
+    }
+}
+
+.won-dark-mode .won-app {
+    --won-bg: #0F172A;
+    --won-bg-card: #1E293B;
+    --won-bg-hover: #334155;
+    --won-border: #334155;
+    --won-text: #F1F5F9;
+    --won-text-secondary: #94A3B8;
+    --won-text-muted: #64748B;
+    --won-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --won-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    --won-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+    --won-glass-bg: rgba(30, 41, 59, 0.8);
+    --won-glass-border: rgba(51, 65, 85, 0.5);
+}
+
+
+/* ============================================
+   Base & Reset
+   ============================================ */
+.won-app {
+    font-family: var(--won-font);
+    color: var(--won-text);
+    background: var(--won-bg);
+    padding: var(--won-space-lg);
+    margin: -20px -20px 0 -2px;
+    min-height: calc(100vh - 32px);
+    line-height: 1.6;
+}
+
+.won-app *,
+.won-app *::before,
+.won-app *::after {
+    box-sizing: border-box;
+}
+
+.won-app h1, .won-app h2, .won-app h3, .won-app h4 {
+    margin: 0;
+    font-weight: 600;
+    color: var(--won-text);
+    line-height: 1.3;
+}
+
+.won-app p {
+    margin: 4px 0 0;
+    color: var(--won-text-secondary);
+    font-size: 14px;
+}
+
+/* ============================================
+   Header
+   ============================================ */
+.won-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--won-space-lg);
+    padding-bottom: var(--won-space-lg);
+    border-bottom: 1px solid var(--won-border);
+}
+
+.won-header__left {
+    display: flex;
+    align-items: center;
+    gap: var(--won-space-md);
+}
+
+.won-header__right {
+    display: flex;
+    align-items: center;
+    gap: var(--won-space-sm);
+}
+
+.won-logo {
+    display: flex;
+    align-items: center;
+    gap: var(--won-space-md);
+}
+
+.won-logo h1 {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.won-logo__text {
+    display: flex;
+    align-items: center;
+    gap: var(--won-space-sm);
+}
+
+.won-back-link {
+    color: var(--won-text-secondary);
+    text-decoration: none;
+    font-size: 14px;
+    transition: var(--won-transition);
+}
+
+.won-back-link:hover {
+    color: var(--won-primary);
+}
+
+/* ============================================
+   Badge
+   ============================================ */
+.won-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: var(--won-radius-full);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.won-badge--version {
+    background: var(--won-primary-light);
+    color: var(--won-primary-dark);
+}
+
+.won-badge--success {
+    background: #D1FAE5;
+    color: #065F46;
+}
+
+.won-badge--warning {
+    background: #FEF3C7;
+    color: #92400E;
+}
+
+.won-badge--danger {
+    background: #FEE2E2;
+    color: #991B1B;
+}
+
+/* ============================================
+   Cards - Glassmorphism
+   ============================================ */
+.won-card {
+    background: var(--won-bg-card);
+    border: 1px solid var(--won-border);
+    border-radius: var(--won-radius-md);
+    box-shadow: var(--won-shadow);
+    margin-bottom: var(--won-space-lg);
+    overflow: hidden;
+    transition: var(--won-transition);
+    backdrop-filter: blur(var(--won-glass-blur));
+}
+
+.won-card:hover {
+    box-shadow: var(--won-shadow-md);
+}
+
+.won-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--won-space-lg);
+    border-bottom: 1px solid var(--won-border);
+}
+
+.won-card__title {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.won-card__description {
+    font-size: 13px;
+    color: var(--won-text-muted);
+}
+
+.won-card__body {
+    padding: var(--won-space-lg);
+}
+
+.won-card__body--table {
+    padding: 0;
+}
+
+.won-card__actions {
+    display: flex;
+    gap: var(--won-space-sm);
+}
+
+
+/* ============================================
+   Stats Grid
+   ============================================ */
+.won-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--won-space-md);
+    margin-bottom: var(--won-space-lg);
+}
+
+.won-stat-card {
+    background: var(--won-bg-card);
+    border: 1px solid var(--won-border);
+    border-radius: var(--won-radius-md);
+    padding: var(--won-space-lg);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--won-space-md);
+    position: relative;
+    overflow: hidden;
+    transition: var(--won-transition);
+    box-shadow: var(--won-shadow-sm);
+}
+
+.won-stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    border-radius: 3px 3px 0 0;
+}
+
+.won-stat-card--primary::before { background: var(--won-primary-gradient); }
+.won-stat-card--success::before { background: var(--won-success); }
+.won-stat-card--warning::before { background: var(--won-warning); }
+.won-stat-card--danger::before { background: var(--won-danger); }
+
+.won-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--won-shadow-md);
+}
+
+.won-stat-card__icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--won-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.won-stat-card--primary .won-stat-card__icon { background: #D1FAE5; color: #059669; }
+.won-stat-card--success .won-stat-card__icon { background: #D1FAE5; color: #10B981; }
+.won-stat-card--warning .won-stat-card__icon { background: #FEF3C7; color: #F59E0B; }
+.won-stat-card--danger .won-stat-card__icon { background: #FEE2E2; color: #EF4444; }
+
+.won-stat-card__content {
+    flex: 1;
+}
+
+.won-stat-card__value {
+    display: block;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--won-text);
+}
+
+.won-stat-card__label {
+    font-size: 13px;
+    color: var(--won-text-muted);
+    margin-top: 2px;
+}
+
+.won-stat-card__badge {
+    position: absolute;
+    top: var(--won-space-md);
+    right: var(--won-space-md);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--won-success);
+    background: #D1FAE5;
+    padding: 2px 8px;
+    border-radius: var(--won-radius-full);
+}
+
+.won-stat-card__trend {
+    position: absolute;
+    top: var(--won-space-md);
+    right: var(--won-space-md);
+}
+
+.won-stat-card__trend--up { color: var(--won-success); }
+.won-stat-card__trend--down { color: var(--won-danger); }
+
+/* ============================================
+   Content Grid
+   ============================================ */
+.won-content-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: var(--won-space-lg);
+    margin-bottom: var(--won-space-lg);
+}
+
+.won-content-grid--templates {
+    grid-template-columns: 1fr 1fr;
+}
+
+@media (max-width: 1200px) {
+    .won-content-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================
+   Buttons
+   ============================================ */
+.won-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 18px;
+    border-radius: var(--won-radius);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1;
+    cursor: pointer;
+    transition: var(--won-transition);
+    text-decoration: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+}
+
+.won-btn--sm {
+    padding: 7px 12px;
+    font-size: 13px;
+}
+
+.won-btn--primary {
+    background: var(--won-primary-gradient);
+    color: #FFFFFF;
+    border-color: var(--won-primary);
+    box-shadow: 0 1px 2px rgba(37, 211, 102, 0.2);
+}
+
+.won-btn--primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+    color: #FFFFFF;
+}
+
+.won-btn--outline {
+    background: transparent;
+    color: var(--won-text);
+    border-color: var(--won-border);
+}
+
+.won-btn--outline:hover {
+    background: var(--won-bg-hover);
+    border-color: var(--won-primary);
+    color: var(--won-primary);
+}
+
+.won-btn--ghost {
+    background: transparent;
+    color: var(--won-text-secondary);
+    border: none;
+    padding: 8px;
+}
+
+.won-btn--ghost:hover {
+    color: var(--won-primary);
+    background: var(--won-bg-hover);
+}
+
+.won-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+
+/* ============================================
+   Form Elements
+   ============================================ */
+.won-form-group {
+    margin-bottom: var(--won-space-lg);
+}
+
+.won-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--won-text);
+    margin-bottom: 6px;
+}
+
+.won-required {
+    color: var(--won-danger);
+}
+
+.won-help-text {
+    font-size: 12px;
+    color: var(--won-text-muted);
+    margin-top: 4px;
+}
+
+.won-help-text code {
+    background: var(--won-bg-hover);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: var(--won-font-mono);
+    font-size: 11px;
+}
+
+.won-input, .won-select, .won-textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--won-border);
+    border-radius: var(--won-radius);
+    font-size: 14px;
+    font-family: var(--won-font);
+    color: var(--won-text);
+    background: var(--won-bg-card);
+    transition: var(--won-transition);
+    outline: none;
+}
+
+.won-input:focus, .won-select:focus, .won-textarea:focus {
+    border-color: var(--won-primary);
+    box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.1);
+}
+
+.won-textarea {
+    resize: vertical;
+    min-height: 120px;
+    font-family: var(--won-font-mono);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.won-input-row {
+    display: flex;
+    gap: var(--won-space-sm);
+}
+
+.won-input-group {
+    display: flex;
+    gap: var(--won-space-sm);
+    margin-top: var(--won-space-sm);
+}
+
+.won-input-group .won-input {
+    flex: 1;
+}
+
+.won-form-actions {
+    display: flex;
+    gap: var(--won-space-sm);
+    margin-top: var(--won-space-lg);
+    padding-top: var(--won-space-lg);
+    border-top: 1px solid var(--won-border);
+}
+
+/* Switch Toggle */
+.won-switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.won-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.won-switch__slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background: var(--won-border);
+    border-radius: var(--won-radius-full);
+    transition: var(--won-transition);
+}
+
+.won-switch__slider::before {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    left: 3px;
+    bottom: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: var(--won-transition);
+    box-shadow: var(--won-shadow-sm);
+}
+
+.won-switch input:checked + .won-switch__slider {
+    background: var(--won-primary);
+}
+
+.won-switch input:checked + .won-switch__slider::before {
+    transform: translateX(20px);
+}
+
+/* Radio Group */
+.won-radio-group {
+    display: flex;
+    gap: var(--won-space-md);
+}
+
+.won-radio {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    color: var(--won-text-secondary);
+}
+
+.won-radio input:checked ~ * {
+    color: var(--won-primary);
+}
+
+/* Toggle Group */
+.won-toggle-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--won-border);
+    border-radius: var(--won-radius);
+    overflow: hidden;
+}
+
+.won-toggle-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--won-space-md) var(--won-space-lg);
+    background: var(--won-bg-card);
+}
+
+.won-toggle-item__info strong {
+    font-size: 14px;
+    display: block;
+}
+
+.won-toggle-item__info p {
+    font-size: 12px;
+    margin: 2px 0 0;
+}
+
+/* ============================================
+   Notice
+   ============================================ */
+.won-notice {
+    display: flex;
+    align-items: center;
+    gap: var(--won-space-md);
+    padding: var(--won-space-md) var(--won-space-lg);
+    border-radius: var(--won-radius-md);
+    margin-bottom: var(--won-space-lg);
+    border: 1px solid;
+}
+
+.won-notice--warning {
+    background: #FFFBEB;
+    border-color: #FCD34D;
+    color: #92400E;
+}
+
+.won-notice__icon {
+    flex-shrink: 0;
+    color: #F59E0B;
+}
+
+.won-notice__content {
+    flex: 1;
+}
+
+.won-notice__content strong {
+    display: block;
+    font-size: 14px;
+}
+
+.won-notice__content p {
+    font-size: 13px;
+    margin: 2px 0 0;
+    color: inherit;
+    opacity: 0.8;
+}
+
+
+/* ============================================
+   Quick Actions
+   ============================================ */
+.won-quick-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--won-space-lg);
+}
+
+.won-quick-action h4 {
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.won-quick-action p {
+    font-size: 12px;
+    margin-bottom: var(--won-space-sm);
+}
+
+.won-connection-status {
+    display: flex;
+    align-items: center;
+    gap: var(--won-space-sm);
+    margin-bottom: var(--won-space-sm);
+    font-size: 14px;
+}
+
+.won-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+.won-status-dot--success { background: var(--won-success); }
+.won-status-dot--danger { background: var(--won-danger); }
+.won-status-dot--warning { background: var(--won-warning); }
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Breakdown */
+.won-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: var(--won-space-sm);
+    margin-top: var(--won-space-sm);
+}
+
+.won-breakdown__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--won-border);
+}
+
+.won-breakdown__item:last-child {
+    border-bottom: none;
+}
+
+.won-breakdown__label {
+    font-size: 13px;
+    color: var(--won-text-secondary);
+}
+
+.won-breakdown__value {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--won-text);
+}
+
+/* ============================================
+   Settings Layout
+   ============================================ */
+.won-settings-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: var(--won-space-lg);
+}
+
+@media (max-width: 900px) {
+    .won-settings-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+.won-settings-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.won-settings-nav__item {
+    display: flex;
+    align-items: center;
+    gap: var(--won-space-sm);
+    padding: 10px 14px;
+    border-radius: var(--won-radius);
+    font-size: 14px;
+    color: var(--won-text-secondary);
+    text-decoration: none;
+    transition: var(--won-transition);
+}
+
+.won-settings-nav__item:hover {
+    background: var(--won-bg-hover);
+    color: var(--won-text);
+}
+
+.won-settings-nav__item.active {
+    background: var(--won-primary-light);
+    color: var(--won-primary-dark);
+    font-weight: 500;
+}
+
+.won-settings-panel {
+    display: none;
+}
+
+.won-settings-panel.active {
+    display: block;
+    animation: fadeIn 0.2s ease-out;
+}
+
+/* Provider Cards */
+.won-provider-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--won-space-md);
+}
+
+.won-provider-card {
+    border: 2px solid var(--won-border);
+    border-radius: var(--won-radius-md);
+    padding: var(--won-space-lg);
+    cursor: pointer;
+    transition: var(--won-transition);
+    position: relative;
+}
+
+.won-provider-card input {
+    position: absolute;
+    opacity: 0;
+}
+
+.won-provider-card:hover {
+    border-color: var(--won-primary);
+}
+
+.won-provider-card--active {
+    border-color: var(--won-primary);
+    background: rgba(37, 211, 102, 0.05);
+}
+
+.won-provider-card__content strong {
+    display: block;
+    font-size: 15px;
+    margin-bottom: 4px;
+}
+
+.won-provider-card__content p {
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+/* ============================================
+   Table
+   ============================================ */
+.won-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.won-table th {
+    text-align: left;
+    padding: 12px var(--won-space-lg);
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--won-text-muted);
+    background: var(--won-bg-hover);
+    border-bottom: 1px solid var(--won-border);
+}
+
+.won-table td {
+    padding: 12px var(--won-space-lg);
+    border-bottom: 1px solid var(--won-border);
+    vertical-align: middle;
+}
+
+.won-table tr:hover td {
+    background: var(--won-bg-hover);
+}
+
+.won-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* ============================================
+   Filters
+   ============================================ */
+.won-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--won-space-sm);
+}
+
+.won-filter-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.won-filter-sep {
+    font-size: 12px;
+    color: var(--won-text-muted);
+}
+
+.won-select--sm {
+    padding: 6px 10px;
+    font-size: 13px;
+}
+
+/* ============================================
+   Pagination
+   ============================================ */
+.won-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--won-space-sm);
+    padding: var(--won-space-md) var(--won-space-lg);
+    border-top: 1px solid var(--won-border);
+}
+
+.won-pagination__btn {
+    padding: 6px 12px;
+    border: 1px solid var(--won-border);
+    border-radius: var(--won-radius);
+    background: var(--won-bg-card);
+    color: var(--won-text);
+    cursor: pointer;
+    font-size: 13px;
+    transition: var(--won-transition);
+}
+
+.won-pagination__btn:hover {
+    border-color: var(--won-primary);
+    color: var(--won-primary);
+}
+
+.won-pagination__btn.active {
+    background: var(--won-primary);
+    border-color: var(--won-primary);
+    color: white;
+}
+
+
+/* ============================================
+   Template Editor
+   ============================================ */
+.won-template-tabs {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.won-template-tab {
+    padding: 8px 16px;
+    border: 1px solid var(--won-border);
+    border-radius: var(--won-radius-full);
+    background: transparent;
+    color: var(--won-text-secondary);
+    font-size: 13px;
+    cursor: pointer;
+    transition: var(--won-transition);
+}
+
+.won-template-tab:hover {
+    border-color: var(--won-primary);
+    color: var(--won-primary);
+}
+
+.won-template-tab.active {
+    background: var(--won-primary);
+    border-color: var(--won-primary);
+    color: white;
+}
+
+.won-template-editor {
+    display: none;
+}
+
+.won-template-editor.active {
+    display: block;
+}
+
+.won-template-textarea {
+    min-height: 200px;
+}
+
+.won-placeholders {
+    margin-top: var(--won-space-md);
+}
+
+.won-placeholders h4 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--won-text-muted);
+    margin-bottom: var(--won-space-sm);
+}
+
+.won-placeholder-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.won-placeholder-tag {
+    padding: 3px 8px;
+    background: var(--won-bg-hover);
+    border: 1px solid var(--won-border);
+    border-radius: var(--won-radius-sm);
+    font-size: 11px;
+    font-family: var(--won-font-mono);
+    color: var(--won-primary-dark);
+    cursor: pointer;
+    transition: var(--won-transition);
+}
+
+.won-placeholder-tag:hover {
+    background: var(--won-primary-light);
+    border-color: var(--won-primary);
+}
+
+/* Phone Preview */
+.won-phone-preview {
+    background: #ECE5DD;
+    border-radius: var(--won-radius-md);
+    overflow: hidden;
+    max-width: 360px;
+    margin: 0 auto;
+}
+
+.won-phone-preview__header {
+    display: flex;
+    align-items: center;
+    gap: var(--won-space-sm);
+    padding: 12px 16px;
+    background: #075E54;
+    color: white;
+}
+
+.won-phone-preview__avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--won-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.won-phone-preview__name {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.won-phone-preview__body {
+    padding: 16px;
+    min-height: 200px;
+}
+
+.won-phone-preview__message {
+    background: white;
+    padding: 8px 12px;
+    border-radius: 0 8px 8px 8px;
+    font-size: 13px;
+    line-height: 1.5;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.won-phone-preview__time {
+    text-align: right;
+    font-size: 11px;
+    color: #667781;
+    margin-top: 4px;
+}
+
+/* ============================================
+   Loading & Spinner
+   ============================================ */
+.won-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--won-space-2xl);
+    color: var(--won-text-muted);
+}
+
+.won-spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--won-border);
+    border-top-color: var(--won-primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: var(--won-space-sm);
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ============================================
+   Toast Notifications
+   ============================================ */
+.won-toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    padding: 14px 20px;
+    border-radius: var(--won-radius);
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: var(--won-shadow-lg);
+    z-index: 99999;
+    animation: slideUp 0.3s ease-out;
+    display: flex;
+    align-items: center;
+    gap: var(--won-space-sm);
+}
+
+.won-toast--success { background: var(--won-success); }
+.won-toast--error { background: var(--won-danger); }
+.won-toast--warning { background: var(--won-warning); }
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ============================================
+   Dark Mode Theme Toggle
+   ============================================ */
+#won-theme-toggle .won-icon--moon { display: none; }
+.won-dark-mode #won-theme-toggle .won-icon--sun { display: none; }
+.won-dark-mode #won-theme-toggle .won-icon--moon { display: block; }
+
+.won-dark-mode .won-notice--warning {
+    background: rgba(245, 158, 11, 0.1);
+    border-color: rgba(245, 158, 11, 0.3);
+    color: #FCD34D;
+}
+
+.won-dark-mode .won-phone-preview {
+    background: #1a2e35;
+}
+
+.won-dark-mode .won-phone-preview__message {
+    background: #1E293B;
+    color: var(--won-text);
+}
+
+.won-dark-mode .won-badge--version {
+    background: rgba(37, 211, 102, 0.15);
+    color: var(--won-primary);
+}
+
+.won-dark-mode .won-badge--success {
+    background: rgba(16, 185, 129, 0.15);
+    color: #6EE7B7;
+}
+
+.won-dark-mode .won-stat-card__badge {
+    background: rgba(16, 185, 129, 0.15);
+    color: #6EE7B7;
+}
+
+.won-dark-mode .won-stat-card--primary .won-stat-card__icon,
+.won-dark-mode .won-stat-card--success .won-stat-card__icon {
+    background: rgba(16, 185, 129, 0.15);
+}
+
+.won-dark-mode .won-stat-card--warning .won-stat-card__icon {
+    background: rgba(245, 158, 11, 0.15);
+}
+
+.won-dark-mode .won-stat-card--danger .won-stat-card__icon {
+    background: rgba(239, 68, 68, 0.15);
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+@media (max-width: 782px) {
+    .won-app {
+        padding: var(--won-space-md);
+    }
+
+    .won-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--won-space-md);
+    }
+
+    .won-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .won-content-grid,
+    .won-content-grid--templates {
+        grid-template-columns: 1fr;
+    }
+
+    .won-settings-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .won-settings-nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .won-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .won-filter-group {
+        width: 100%;
+    }
+
+    .won-filter-group .won-input,
+    .won-filter-group .won-select {
+        flex: 1;
+    }
+
+    .won-table {
+        font-size: 12px;
+    }
+
+    .won-table th,
+    .won-table td {
+        padding: 8px 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .won-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .won-stat-card__value {
+        font-size: 22px;
+    }
+
+    .won-template-tabs {
+        flex-direction: column;
+    }
+
+    .won-provider-cards {
+        grid-template-columns: 1fr;
+    }
+}
