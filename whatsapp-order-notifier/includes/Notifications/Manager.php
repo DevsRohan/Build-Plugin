@@ -1,222 +1,77 @@
 <?php
-/**
- * Notification Manager.
- *
- * @package suspended_Order_Notifier\Notifications
- * @since 1.0.0
- */
-
 namespace suspended_Order_Notifier\Notifications;
 
-use suspended_Order_Notifier\Database\MessageQueue;
-use suspended_Order_Notifier\Database\NotificationLog;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
-// Exit if accessed directly.
-if ( ! defined( 'ABSPATH' ) ) {
-    exit;
-}
-
-/**
- * Central notification management system.
- *
- * Handles message template rendering, phone number resolution,
- * and queuing notifications for delivery.
- *
- * @since 1.0.0
- */
 class Manager {
 
     /**
-     * Message queue model.
-     *
-     * @var MessageQueue
-     */
-    private $queue;
-
-    /**
-     * Notification log model.
-     *
-     * @var NotificationLog
-     */
-    private $log;
-
-    /**
-     * Message builder instance.
-     *
-     * @var MessageBuilder
-     */
-    private $builder;
-
-    /**
-     * Constructor.
-     */
-    public function __construct() {
-        $this->queue   = new MessageQueue();
-        $this->log     = new NotificationLog();
-        $this->builder = new MessageBuilder();
-    }
-
-    /**
-     * Queue a notification for delivery.
-     *
-     * @param string      $type         Notification type (order, stock, refund, abandoned_cart).
-     * @param int         $reference_id Reference ID (order ID, product ID, cart ID).
-     * @param array       $data         Template data.
-     * @param string|null $custom_message Custom message (overrides template).
-     * @return int|false Queue ID or false on failure.
+     * Queue a notification for sending.
      */
     public function queue_notification( $type, $reference_id, $data, $custom_message = null ) {
-        // Get recipient phone number.
-        $phone = $this->get_recipient_phone( $type, $data );
+        $phone = $this->get_admin_phone();
+        if ( empty( $phone ) ) return false;
 
-        if ( empty( $phone ) ) {
-            // Log the failure.
-            $this->log->insert(
-                array(
-                    'notification_type' => $type,
-                    'reference_id'      => $reference_id,
-                    'recipient_phone'   => 'unknown',
-                    'message_content'   => 'Failed: No recipient phone number available.',
-                    'status'            => 'failed',
-                    'error_message'     => __( 'No recipient phone number configured or available.', 'suspended-order-notifier' ),
-                )
-            );
-            return false;
-        }
+        $message = $custom_message ?: $this->build_message( $type, $data );
+        if ( empty( $message ) ) return false;
 
-        // Build the message.
-        if ( $custom_message ) {
-            $message = $this->builder->render_placeholders( $custom_message, $data );
-        } else {
-            $message = $this->builder->build_message( $type, $data );
-        }
-
-        if ( empty( $message ) ) {
-            return false;
-        }
-
-        /**
-         * Filter the notification message before queuing.
-         *
-         * @param string $message      The message content.
-         * @param string $type         Notification type.
-         * @param int    $reference_id Reference ID.
-         * @param array  $data         Template data.
-         */
         $message = apply_filters( 'won_notification_message', $message, $type, $reference_id, $data );
 
-        /**
-         * Filter the recipient phone number.
-         *
-         * @param string $phone        Recipient phone.
-         * @param string $type         Notification type.
-         * @param int    $reference_id Reference ID.
-         * @param array  $data         Template data.
-         */
-        $phone = apply_filters( 'won_notification_phone', $phone, $type, $reference_id, $data );
-
-        // Add to queue.
-        $queue_id = $this->queue->enqueue(
-            array(
-                'notification_type' => $type,
-                'reference_id'      => $reference_id,
-                'recipient_phone'   => $phone,
-                'message_content'   => $message,
-            )
-        );
-
-        if ( $queue_id ) {
-            /**
-             * Action fired after notification is queued.
-             *
-             * @param int    $queue_id     Queue item ID.
-             * @param string $type         Notification type.
-             * @param int    $reference_id Reference ID.
-             * @param string $phone        Recipient phone.
-             */
-            do_action( 'won_notification_queued', $queue_id, $type, $reference_id, $phone );
-        }
-
-        return $queue_id;
+        $queue = new \suspended_Order_Notifier\Database\MessageQueue();
+        return $queue->enqueue( array(
+            'notification_type' => $type,
+            'reference_id'      => $reference_id,
+            'recipient_phone'   => $phone,
+            'message_content'   => $message,
+        ) );
     }
 
     /**
-     * Send a notification immediately (bypass queue).
-     *
-     * @param string $type         Notification type.
-     * @param int    $reference_id Reference ID.
-     * @param array  $data         Template data.
-     * @return array Send result.
+     * Build message from template + data.
      */
-    public function send_immediate( $type, $reference_id, $data ) {
-        $phone   = $this->get_recipient_phone( $type, $data );
-        $message = $this->builder->build_message( $type, $data );
-
-        if ( empty( $phone ) || empty( $message ) ) {
-            return array(
-                'success' => false,
-                'error'   => __( 'Missing phone number or message content.', 'suspended-order-notifier' ),
-            );
+    public function build_message( $type, $data ) {
+        $template = get_option( 'won_template_' . $type, '' );
+        if ( empty( $template ) ) {
+            $template = $this->get_default_template( $type );
         }
 
-        $result = \suspended_Order_Notifier\Api\ProviderFactory::send( $phone, $message );
-
-        // Log the result.
-        $this->log->insert(
-            array(
-                'notification_type'   => $type,
-                'reference_id'        => $reference_id,
-                'recipient_phone'     => $phone,
-                'message_content'     => $message,
-                'status'              => $result['success'] ? 'sent' : 'failed',
-                'provider_message_id' => $result['message_id'] ?? null,
-                'error_message'       => $result['error'] ?? null,
-                'sent_at'             => $result['success'] ? current_time( 'mysql' ) : null,
-            )
-        );
-
-        return $result;
-    }
-
-    /**
-     * Get the recipient phone number based on notification type.
-     *
-     * @param string $type Notification type.
-     * @param array  $data Template data.
-     * @return string Phone number with country code.
-     */
-    private function get_recipient_phone( $type, $data ) {
-        // The primary recipient is always the store owner/admin.
-        $admin_phone  = get_option( 'won_phone_number', '' );
-        $country_code = get_option( 'won_country_code', '+91' );
-
-        if ( ! empty( $admin_phone ) ) {
-            // Ensure country code is prepended.
-            if ( strpos( $admin_phone, '+' ) !== 0 ) {
-                $admin_phone = $country_code . $admin_phone;
+        // Replace placeholders
+        foreach ( $data as $key => $value ) {
+            if ( is_string( $value ) || is_numeric( $value ) ) {
+                $template = str_replace( '{' . $key . '}', (string) $value, $template );
             }
-            return $admin_phone;
         }
+        $template = str_replace( '{site_name}', get_bloginfo( 'name' ), $template );
+        $template = str_replace( '{current_time}', current_time( 'Y-m-d H:i:s' ), $template );
 
-        // Fallback: try to get phone from data.
-        if ( ! empty( $data['customer_phone'] ) ) {
-            $phone = $data['customer_phone'];
-            if ( strpos( $phone, '+' ) !== 0 ) {
-                $phone = $country_code . $phone;
-            }
-            return $phone;
-        }
+        // Strip HTML (from wc_price etc), remove unreplaced placeholders
+        $template = wp_strip_all_tags( $template );
+        $template = preg_replace( '/\{[a-z_]+\}/', '', $template );
+        $template = preg_replace( '/\n{3,}/', "\n\n", $template );
 
-        return '';
+        return trim( $template );
     }
 
     /**
-     * Get notification statistics for a specific period.
-     *
-     * @param string $period Period (today, week, month, all).
-     * @return array
+     * Get admin phone number with country code.
      */
-    public function get_stats( $period = 'today' ) {
-        return $this->log->get_stats( $period );
+    private function get_admin_phone() {
+        $phone = get_option( 'won_phone_number', '' );
+        if ( empty( $phone ) ) return '';
+
+        if ( strpos( $phone, '+' ) !== 0 ) {
+            $phone = get_option( 'won_country_code', '+91' ) . $phone;
+        }
+        return $phone;
+    }
+
+    private function get_default_template( $type ) {
+        $defaults = array(
+            'order' => "🛒 *New Order #{order_id}*\n\n👤 {customer_name}\n📱 {customer_phone}\n📧 {customer_email}\n\n📦 Items:\n{order_items}\n\n💰 Total: {order_total}\n💳 Payment: {payment_method}\n📍 {shipping_address}\n\n🕐 {order_date}",
+            'stock' => "⚠️ *{stock_status}*\n\n📦 {product_name}\n🔢 Stock: {stock_quantity}\n🆔 SKU: {product_sku}\n\n⏰ {alert_time}",
+            'refund' => "🔄 *Refund Request*\n\n🛒 Order #{order_id}\n👤 {customer_name}\n💰 Amount: {refund_amount}\n📝 Reason: {refund_reason}\n\n⏰ {refund_date}",
+            'abandoned_cart' => "🛒 *Abandoned Cart*\n\n👤 {customer_name}\n📧 {customer_email}\n\n📦 Items:\n{cart_items}\n\n💰 Value: {cart_total}\n⏰ Abandoned: {abandoned_time}",
+        );
+        return $defaults[ $type ] ?? $defaults['order'];
     }
 }
