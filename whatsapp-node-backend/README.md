@@ -1,3 +1,13 @@
+---
+title: WhatsApp Order Notifier
+emoji: 💬
+colorFrom: green
+colorTo: blue
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # WhatsApp Order Notifier - Node.js Backend
 
 Free WhatsApp messaging backend for WooCommerce. Deploy on **Hugging Face Spaces** and get unlimited WhatsApp notifications without paying for any API.
