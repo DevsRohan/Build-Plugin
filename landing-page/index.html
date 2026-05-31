@@ -2,7 +2,7 @@
 <html lang="en" class="scroll-smooth">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 <title>WhatsApp Order Notifier — Never Miss a WooCommerce Order Again</title>
 <meta name="description" content="Instant WhatsApp alerts for WooCommerce orders. Free self-hosted. No monthly fees. $19 one-time.">
 <script src="https://cdn.tailwindcss.com"></script>
@@ -12,7 +12,8 @@
 tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif']},colors:{wa:{DEFAULT:'#25D366',dark:'#128C7E',light:'#DCF8C6'},dark:{900:'#06080F',800:'#0C1120',700:'#141D2F',600:'#1E293B'}},animation:{'float':'float 4s ease-in-out infinite','glow':'glow 3s ease-in-out infinite','fadeUp':'fadeUp 0.8s ease-out forwards'},keyframes:{float:{'0%,100%':{transform:'translateY(0)'},'50%':{transform:'translateY(-12px)'}},glow:{'0%,100%':{boxShadow:'0 0 20px rgba(37,211,102,0.2)'},'50%':{boxShadow:'0 0 60px rgba(37,211,102,0.4)'}},fadeUp:{from:{opacity:'0',transform:'translateY(40px)'},to:{opacity:'1',transform:'translateY(0)'}}}}}}
 </script>
 <style>
-body{background:#06080F}
+body{background:#06080F;overflow-x:hidden;width:100%;max-width:100vw}
+html{overflow-x:hidden}
 .glass{background:rgba(12,17,32,0.6);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
 .gradient-border{position:relative}
 .gradient-border::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(135deg,rgba(37,211,102,0.3),rgba(6,182,212,0.1),rgba(37,211,102,0.1));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
@@ -26,6 +27,7 @@ body{background:#06080F}
 </style>
 </head>
 <body class="text-white font-sans antialiased overflow-x-hidden">
+<div class="w-full overflow-x-hidden">
 <div class="noise"></div>
 
 
@@ -65,9 +67,9 @@ body{background:#06080F}
 
 <!-- HERO -->
 <section class="relative pt-24 sm:pt-32 lg:pt-40 pb-16 sm:pb-24 lg:pb-32">
-  <!-- BG Effects -->
-  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-wa/8 rounded-full blur-[150px] pointer-events-none"></div>
-  <div class="absolute bottom-0 right-0 w-[400px] h-[400px] bg-cyan-500/5 rounded-full blur-[120px] pointer-events-none"></div>
+  <!-- BG Effects — clamped to viewport to prevent overflow -->
+  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[80vw] max-w-[600px] h-[80vw] max-h-[600px] bg-wa/8 rounded-full blur-[150px] pointer-events-none"></div>
+  <div class="absolute bottom-0 right-0 w-[60vw] max-w-[400px] h-[60vw] max-h-[400px] bg-cyan-500/5 rounded-full blur-[120px] pointer-events-none"></div>
 
   <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
     <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
@@ -339,6 +341,7 @@ body{background:#06080F}
     <div class="pt-6 border-t border-white/5 text-center text-[10px] sm:text-xs text-gray-600">&copy; 2024 WhatsApp Order Notifier. All rights reserved.</div>
   </div>
 </footer>
+</div><!-- end overflow wrapper -->
 
 <!-- WHATSAPP FLOATING WIDGET -->
 <div id="wa-widget" class="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-[9999]">
