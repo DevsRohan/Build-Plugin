@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WhatsApp Order Notifier — Never Miss a WooCommerce Order Again</title>
+<meta name="description" content="Instant WhatsApp alerts for WooCommerce orders. Free self-hosted. No monthly fees. ₹1,499 one-time.">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+      colors: {
+        wa: { DEFAULT: '#25D366', dark: '#128C7E', light: '#DCF8C6' },
+        dark: { 900: '#0A0F1C', 800: '#111827', 700: '#1E293B', 600: '#334155' }
+      },
+      animation: {
+        'float': 'float 3s ease-in-out infinite',
+        'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
+        'slide-up': 'slideUp 0.6s ease-out forwards',
+      },
+      keyframes: {
+        float: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } },
+        pulseGlow: { '0%,100%': { boxShadow: '0 0 20px rgba(37,211,102,0.3)' }, '50%': { boxShadow: '0 0 40px rgba(37,211,102,0.6)' } },
+        slideUp: { from: { opacity: '0', transform: 'translateY(30px)' }, to: { opacity: '1', transform: 'translateY(0)' } }
+      }
+    }
+  }
+}
+</script>
+</head>
+<body class="bg-dark-900 text-white font-sans antialiased overflow-x-hidden">
+
+
+<!-- NAVBAR -->
+<nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-dark-900/80 border-b border-white/5">
+  <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+    <a href="#" class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-wa to-wa-dark flex items-center justify-center text-lg">💬</div>
+      <span class="font-bold text-lg hidden sm:block">WhatsApp Order Notifier</span>
+    </a>
+    <div class="hidden md:flex items-center gap-8 text-sm text-gray-300">
+      <a href="#features" class="hover:text-wa transition">Features</a>
+      <a href="#how-it-works" class="hover:text-wa transition">How It Works</a>
+      <a href="#pricing" class="hover:text-wa transition">Pricing</a>
+      <a href="#faq" class="hover:text-wa transition">FAQ</a>
+      <a href="#pricing" class="px-5 py-2 rounded-full bg-gradient-to-r from-wa to-wa-dark text-white font-semibold text-sm hover:shadow-lg hover:shadow-wa/20 transition-all hover:-translate-y-0.5">Get Started</a>
+    </div>
+  </div>
+</nav>
+
+
+<!-- HERO -->
+<section class="relative pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-b from-wa/5 via-transparent to-transparent pointer-events-none"></div>
+  <div class="absolute top-20 left-1/4 w-96 h-96 bg-wa/10 rounded-full blur-[120px] pointer-events-none"></div>
+  <div class="absolute bottom-0 right-1/4 w-80 h-80 bg-blue-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+  <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center relative z-10">
+    <div>
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-wa/10 border border-wa/20 text-wa text-xs font-semibold mb-6">
+        <span class="w-2 h-2 bg-wa rounded-full animate-pulse"></span>
+        Used by 2,000+ Store Owners in India
+      </div>
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.1] mb-6">
+        Never Miss a<br><span class="bg-gradient-to-r from-wa to-cyan-400 bg-clip-text text-transparent">WooCommerce Order</span> Again
+      </h1>
+      <p class="text-lg text-gray-400 mb-8 max-w-lg leading-relaxed">
+        Instant WhatsApp notifications for every new order, low stock, refund & abandoned cart. <strong class="text-white">Zero monthly fees. Self-hosted. Setup in 2 minutes.</strong>
+      </p>
+      <div class="flex flex-wrap gap-4 mb-8">
+        <a href="#pricing" class="group px-8 py-4 rounded-xl bg-gradient-to-r from-wa to-wa-dark text-white font-bold text-base shadow-xl shadow-wa/20 hover:shadow-wa/40 transition-all hover:-translate-y-1 flex items-center gap-2">
+          Get Started — ₹1,499
+          <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#trial" class="px-8 py-4 rounded-xl border border-white/10 text-white font-semibold hover:bg-white/5 transition-all">Try Free — 24 Hours</a>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="flex -space-x-3">
+          <div class="w-9 h-9 rounded-full bg-gradient-to-br from-orange-400 to-pink-500 border-2 border-dark-900 flex items-center justify-center text-xs font-bold">R</div>
+          <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 border-2 border-dark-900 flex items-center justify-center text-xs font-bold">P</div>
+          <div class="w-9 h-9 rounded-full bg-gradient-to-br from-wa to-cyan-400 border-2 border-dark-900 flex items-center justify-center text-xs font-bold">A</div>
+          <div class="w-9 h-9 rounded-full bg-gradient-to-br from-yellow-400 to-red-500 border-2 border-dark-900 flex items-center justify-center text-xs font-bold">S</div>
+        </div>
+        <div><div class="text-yellow-400 text-sm">★★★★★</div><span class="text-xs text-gray-400">4.9/5 from 500+ reviews</span></div>
+      </div>
+    </div>
+    <div class="relative flex justify-center lg:justify-end">
+      <div class="relative w-72 sm:w-80 animate-float">
+        <div class="bg-dark-700 rounded-[2.5rem] p-3 border border-white/10 shadow-2xl">
+          <div class="bg-[#0B141A] rounded-[2rem] overflow-hidden">
+            <div class="bg-[#1F2C34] px-4 py-3 flex items-center gap-3">
+              <div class="w-8 h-8 rounded-full bg-wa flex items-center justify-center text-sm">🛒</div>
+              <span class="text-sm font-medium">Your Store</span>
+            </div>
+            <div class="p-3 space-y-3 min-h-[320px] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImEiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+PHBhdGggZD0iTTAgMGg0MHY0MEgweiIgZmlsbD0ibm9uZSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNhKSIvPjwvc3ZnPg==')]">
+              <div class="bg-[#1F2C34] rounded-lg rounded-tl-none p-3 max-w-[85%] text-xs leading-relaxed shadow">
+                🛒 <strong>New Order #1847</strong><br><br>👤 Rajesh Kumar<br>📱 +91 98765 43210<br><br>📦 iPhone 15 Pro x1<br>💰 Total: ₹1,29,999<br>💳 UPI / PhonePe<br><br>🕐 Just now
+                <div class="text-right text-[10px] text-gray-500 mt-1">10:32 AM ✓✓</div>
+              </div>
+              <div class="bg-[#1F2C34] rounded-lg rounded-tl-none p-3 max-w-[75%] text-xs leading-relaxed shadow mt-2">
+                ⚠️ <strong>LOW STOCK</strong><br><br>📦 AirPods Pro<br>🔢 Only 3 left!
+                <div class="text-right text-[10px] text-gray-500 mt-1">10:33 AM ✓✓</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- PAIN SECTION -->
+<section class="py-20">
+  <div class="max-w-5xl mx-auto px-6 grid md:grid-cols-2 gap-6">
+    <div class="bg-red-500/5 border border-red-500/20 rounded-2xl p-8">
+      <div class="text-3xl mb-4">😫</div>
+      <h3 class="text-xl font-bold mb-4 text-red-400">Without This Plugin</h3>
+      <ul class="space-y-3 text-gray-400 text-sm">
+        <li>❌ Orders buried in email inbox</li>
+        <li>❌ Miss orders for HOURS</li>
+        <li>❌ Late response = customer cancels</li>
+        <li>❌ Lost revenue every single day</li>
+        <li>❌ Competitor steals your customer</li>
+      </ul>
+    </div>
+    <div class="bg-wa/5 border border-wa/20 rounded-2xl p-8">
+      <div class="text-3xl mb-4">🚀</div>
+      <h3 class="text-xl font-bold mb-4 text-wa">With WhatsApp Notifier</h3>
+      <ul class="space-y-3 text-gray-300 text-sm">
+        <li>✅ Instant WhatsApp notification</li>
+        <li>✅ See orders in 2 seconds</li>
+        <li>✅ Respond immediately</li>
+        <li>✅ Happy customers, more sales</li>
+        <li>✅ Zero orders missed. Ever.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" class="py-20">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <span class="inline-block px-4 py-1.5 rounded-full bg-wa/10 text-wa text-xs font-bold uppercase tracking-wider mb-4">Features</span>
+      <h2 class="text-3xl sm:text-4xl font-black mb-4">Everything to <span class="bg-gradient-to-r from-wa to-cyan-400 bg-clip-text text-transparent">Never Miss an Order</span></h2>
+      <p class="text-gray-400 max-w-xl mx-auto">Built for Indian, SEA & LATAM e-commerce owners who live on WhatsApp.</p>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="bg-dark-800 border border-white/5 rounded-2xl p-6 hover:border-wa/30 hover:-translate-y-1 transition-all duration-300"><div class="text-3xl mb-4">🛒</div><h3 class="font-bold mb-2">New Order Alerts</h3><p class="text-sm text-gray-400">Full order details on WhatsApp in 2 seconds. Name, phone, items, total, payment, address.</p></div>
+      <div class="bg-dark-800 border border-white/5 rounded-2xl p-6 hover:border-wa/30 hover:-translate-y-1 transition-all duration-300"><div class="text-3xl mb-4">📦</div><h3 class="font-bold mb-2">Low Stock Alerts</h3><p class="text-sm text-gray-400">Get alerted when any product drops below your threshold. Prevent lost sales.</p></div>
+      <div class="bg-dark-800 border border-white/5 rounded-2xl p-6 hover:border-wa/30 hover:-translate-y-1 transition-all duration-300"><div class="text-3xl mb-4">🔄</div><h3 class="font-bold mb-2">Refund Alerts</h3><p class="text-sm text-gray-400">Know refund requests instantly. Resolve before they become 1-star reviews.</p></div>
+      <div class="bg-dark-800 border border-white/5 rounded-2xl p-6 hover:border-wa/30 hover:-translate-y-1 transition-all duration-300"><div class="text-3xl mb-4">🛒</div><h3 class="font-bold mb-2">Abandoned Cart</h3><p class="text-sm text-gray-400">Customer didn't buy? Get notified. Follow up and recover the sale.</p></div>
+      <div class="bg-dark-800 border border-white/5 rounded-2xl p-6 hover:border-wa/30 hover:-translate-y-1 transition-all duration-300"><div class="text-3xl mb-4">📝</div><h3 class="font-bold mb-2">Custom Templates</h3><p class="text-sm text-gray-400">Customize every message format. Emojis, placeholders, your style.</p></div>
+      <div class="bg-dark-800 border border-white/5 rounded-2xl p-6 hover:border-wa/30 hover:-translate-y-1 transition-all duration-300"><div class="text-3xl mb-4">🆓</div><h3 class="font-bold mb-2">Zero Monthly Fees</h3><p class="text-sm text-gray-400">No Twilio. No WhatsApp Business API. Self-hosted free. Pay once forever.</p></div>
+      <div class="bg-dark-800 border border-white/5 rounded-2xl p-6 hover:border-wa/30 hover:-translate-y-1 transition-all duration-300"><div class="text-3xl mb-4">⚡</div><h3 class="font-bold mb-2">2-Minute Setup</h3><p class="text-sm text-gray-400">Deploy → scan QR → done. No APIs, no developer needed. Super easy.</p></div>
+      <div class="bg-dark-800 border border-white/5 rounded-2xl p-6 hover:border-wa/30 hover:-translate-y-1 transition-all duration-300"><div class="text-3xl mb-4">🌙</div><h3 class="font-bold mb-2">Premium Dashboard</h3><p class="text-sm text-gray-400">Beautiful admin with charts, dark mode. Feels like Stripe, not WordPress.</p></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works" class="py-20 bg-dark-800/50">
+  <div class="max-w-5xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <span class="inline-block px-4 py-1.5 rounded-full bg-wa/10 text-wa text-xs font-bold uppercase tracking-wider mb-4">Simple Setup</span>
+      <h2 class="text-3xl sm:text-4xl font-black mb-4">Working in <span class="bg-gradient-to-r from-wa to-cyan-400 bg-clip-text text-transparent">3 Easy Steps</span></h2>
+    </div>
+    <div class="space-y-6">
+      <div class="flex gap-6 items-start bg-dark-800 border border-white/5 rounded-2xl p-8">
+        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-wa to-wa-dark flex items-center justify-center text-lg font-black shrink-0">1</div>
+        <div><h3 class="text-lg font-bold mb-2">Deploy Backend (Free)</h3><p class="text-gray-400 text-sm">Upload 3 files to Hugging Face Spaces (free Docker hosting). Takes 2 minutes. We provide all files.</p></div>
+      </div>
+      <div class="flex gap-6 items-start bg-dark-800 border border-white/5 rounded-2xl p-8">
+        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-wa to-wa-dark flex items-center justify-center text-lg font-black shrink-0">2</div>
+        <div><h3 class="text-lg font-bold mb-2">Install Plugin & Connect</h3><p class="text-gray-400 text-sm">Install plugin in WordPress → paste your Space URL → scan QR with WhatsApp → done!</p></div>
+      </div>
+      <div class="flex gap-6 items-start bg-dark-800 border border-white/5 rounded-2xl p-8">
+        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-wa to-wa-dark flex items-center justify-center text-lg font-black shrink-0">3</div>
+        <div><h3 class="text-lg font-bold mb-2">Get Notifications 🎉</h3><p class="text-gray-400 text-sm">Every new order, stock alert, refund — instantly on WhatsApp. Never open email for orders again!</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="py-20">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <span class="inline-block px-4 py-1.5 rounded-full bg-wa/10 text-wa text-xs font-bold uppercase tracking-wider mb-4">Testimonials</span>
+      <h2 class="text-3xl sm:text-4xl font-black">Loved by Store Owners <span class="bg-gradient-to-r from-wa to-cyan-400 bg-clip-text text-transparent">Across India</span></h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="bg-dark-800 border border-white/5 rounded-2xl p-6"><div class="text-yellow-400 text-sm mb-3">★★★★★</div><p class="text-sm text-gray-300 mb-4">"I used to miss 5-6 orders daily. Now I see every order within seconds. Revenue increased 40% because I respond faster."</p><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-full bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center text-xs font-bold">R</div><div><div class="text-sm font-semibold">Rahul Sharma</div><div class="text-xs text-gray-500">Fashion Store, Mumbai</div></div></div></div>
+      <div class="bg-dark-800 border border-white/5 rounded-2xl p-6"><div class="text-yellow-400 text-sm mb-3">★★★★★</div><p class="text-sm text-gray-300 mb-4">"₹1,499 one-time vs ₹2,000/month on Twilio? No-brainer. Setup took 5 minutes. Best money spent on my store."</p><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-xs font-bold">P</div><div><div class="text-sm font-semibold">Priya Patel</div><div class="text-xs text-gray-500">Electronics, Bangalore</div></div></div></div>
+      <div class="bg-dark-800 border border-white/5 rounded-2xl p-6"><div class="text-yellow-400 text-sm mb-3">★★★★★</div><p class="text-sm text-gray-300 mb-4">"Abandoned cart alerts recovered ₹2.5 lakhs in first month. I call customers within minutes now!"</p><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-full bg-gradient-to-br from-wa to-cyan-400 flex items-center justify-center text-xs font-bold">A</div><div><div class="text-sm font-semibold">Amit Singh</div><div class="text-xs text-gray-500">Home Decor, Delhi</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- PRICING -->
+<section id="pricing" class="py-20 bg-dark-800/50">
+  <div class="max-w-5xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <span class="inline-block px-4 py-1.5 rounded-full bg-wa/10 text-wa text-xs font-bold uppercase tracking-wider mb-4">Pricing</span>
+      <h2 class="text-3xl sm:text-4xl font-black mb-4">One-Time Payment. <span class="bg-gradient-to-r from-wa to-cyan-400 bg-clip-text text-transparent">No Monthly Fees.</span></h2>
+      <p class="text-gray-400">Pay once, use forever. No subscriptions. No hidden charges.</p>
+    </div>
+    <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+      <!-- Trial -->
+      <div id="trial" class="bg-dark-800 border border-white/10 rounded-3xl p-8 flex flex-col">
+        <h3 class="text-xl font-bold mb-1">Trial</h3>
+        <p class="text-sm text-gray-400 mb-6">Try before you buy</p>
+        <div class="mb-6"><span class="text-4xl font-black">FREE</span><span class="text-gray-400 text-sm ml-2">/ 24 hours</span></div>
+        <ul class="space-y-3 text-sm text-gray-300 mb-8 flex-1">
+          <li class="flex items-center gap-2"><span class="text-wa">✓</span> All features included</li>
+          <li class="flex items-center gap-2"><span class="text-wa">✓</span> Full WhatsApp notifications</li>
+          <li class="flex items-center gap-2"><span class="text-wa">✓</span> Order + Stock + Refund alerts</li>
+          <li class="flex items-center gap-2"><span class="text-wa">✓</span> Premium dashboard</li>
+          <li class="flex items-center gap-2"><span class="text-yellow-400">⏰</span> 24 hours only</li>
+          <li class="flex items-center gap-2"><span class="text-red-400">✕</span> Auto-deactivates after 24h</li>
+          <li class="flex items-center gap-2"><span class="text-red-400">✕</span> No updates</li>
+        </ul>
+        <button id="btn-trial" class="w-full py-4 rounded-xl border border-white/10 font-semibold hover:bg-white/5 transition-all text-center">
+          Download Trial Version
+        </button>
+      </div>
+      <!-- Pro -->
+      <div class="relative bg-dark-800 border-2 border-wa/40 rounded-3xl p-8 flex flex-col shadow-xl shadow-wa/5">
+        <div class="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-wa to-wa-dark rounded-full text-xs font-bold">MOST POPULAR</div>
+        <h3 class="text-xl font-bold mb-1">Pro — Lifetime</h3>
+        <p class="text-sm text-gray-400 mb-6">Full version, forever</p>
+        <div class="mb-6">
+          <span class="text-lg text-gray-500 line-through mr-2">₹4,999</span>
+          <span class="text-4xl font-black">₹1,499</span>
+          <span class="text-gray-400 text-sm ml-2">one-time</span>
+        </div>
+        <ul class="space-y-3 text-sm text-gray-300 mb-8 flex-1">
+          <li class="flex items-center gap-2"><span class="text-wa">✓</span> Everything in Trial</li>
+          <li class="flex items-center gap-2"><span class="text-wa">✓</span> Lifetime access</li>
+          <li class="flex items-center gap-2"><span class="text-wa">✓</span> Unlimited notifications</li>
+          <li class="flex items-center gap-2"><span class="text-wa">✓</span> Abandoned cart alerts</li>
+          <li class="flex items-center gap-2"><span class="text-wa">✓</span> Custom templates</li>
+          <li class="flex items-center gap-2"><span class="text-wa">✓</span> Priority WhatsApp support</li>
+          <li class="flex items-center gap-2"><span class="text-wa">✓</span> Free lifetime updates</li>
+          <li class="flex items-center gap-2"><span class="text-wa">✓</span> Node.js backend included</li>
+        </ul>
+        <button id="btn-buy" class="w-full py-4 rounded-xl bg-gradient-to-r from-wa to-wa-dark font-bold text-lg hover:shadow-lg hover:shadow-wa/30 transition-all hover:-translate-y-0.5 animate-pulse-glow">
+          🔥 Buy Now — ₹1,499
+        </button>
+        <p class="text-center text-xs text-gray-500 mt-4">💰 30-day money-back guarantee • 🔒 Razorpay Secure</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- FAQ -->
+<section id="faq" class="py-20">
+  <div class="max-w-3xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <span class="inline-block px-4 py-1.5 rounded-full bg-wa/10 text-wa text-xs font-bold uppercase tracking-wider mb-4">FAQ</span>
+      <h2 class="text-3xl font-black">Frequently Asked <span class="bg-gradient-to-r from-wa to-cyan-400 bg-clip-text text-transparent">Questions</span></h2>
+    </div>
+    <div class="space-y-3" id="faq-list">
+      <div class="faq-item bg-dark-800 border border-white/5 rounded-xl overflow-hidden">
+        <button class="w-full flex items-center justify-between p-5 text-left font-semibold text-sm" onclick="this.parentElement.classList.toggle('open')"><span>Is this really free after purchase?</span><svg class="w-5 h-5 text-gray-400 transition-transform faq-chevron" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="faq-answer px-5 pb-5 text-sm text-gray-400 hidden"><p>Yes! ₹1,499 once. WhatsApp messaging runs on your free Hugging Face Space. No per-message charges. Zero recurring costs.</p></div>
+      </div>
+      <div class="faq-item bg-dark-800 border border-white/5 rounded-xl overflow-hidden">
+        <button class="w-full flex items-center justify-between p-5 text-left font-semibold text-sm" onclick="this.parentElement.classList.toggle('open')"><span>Do I need coding knowledge?</span><svg class="w-5 h-5 text-gray-400 transition-transform faq-chevron" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="faq-answer px-5 pb-5 text-sm text-gray-400 hidden"><p>No. Upload 3 files (drag & drop), install WordPress plugin, scan QR. If you can install a plugin, you can do this.</p></div>
+      </div>
+      <div class="faq-item bg-dark-800 border border-white/5 rounded-xl overflow-hidden">
+        <button class="w-full flex items-center justify-between p-5 text-left font-semibold text-sm" onclick="this.parentElement.classList.toggle('open')"><span>How is this different from Twilio?</span><svg class="w-5 h-5 text-gray-400 transition-transform faq-chevron" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="faq-answer px-5 pb-5 text-sm text-gray-400 hidden"><p>Twilio charges ₹1-5 per message. Our solution uses YOUR WhatsApp via QR — completely free, unlimited messages, works instantly.</p></div>
+      </div>
+      <div class="faq-item bg-dark-800 border border-white/5 rounded-xl overflow-hidden">
+        <button class="w-full flex items-center justify-between p-5 text-left font-semibold text-sm" onclick="this.parentElement.classList.toggle('open')"><span>What happens after 24-hour trial?</span><svg class="w-5 h-5 text-gray-400 transition-transform faq-chevron" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="faq-answer px-5 pb-5 text-sm text-gray-400 hidden"><p>Trial auto-deactivates. No notifications sent. Purchase Pro for lifetime access or simply uninstall.</p></div>
+      </div>
+      <div class="faq-item bg-dark-800 border border-white/5 rounded-xl overflow-hidden">
+        <button class="w-full flex items-center justify-between p-5 text-left font-semibold text-sm" onclick="this.parentElement.classList.toggle('open')"><span>Will my WhatsApp get banned?</span><svg class="w-5 h-5 text-gray-400 transition-transform faq-chevron" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="faq-answer px-5 pb-5 text-sm text-gray-400 hidden"><p>No. This sends messages to YOUR phone only. You're not spamming customers. Like using WhatsApp Web. Completely safe.</p></div>
+      </div>
+      <div class="faq-item bg-dark-800 border border-white/5 rounded-xl overflow-hidden">
+        <button class="w-full flex items-center justify-between p-5 text-left font-semibold text-sm" onclick="this.parentElement.classList.toggle('open')"><span>What if HF Space goes offline?</span><svg class="w-5 h-5 text-gray-400 transition-transform faq-chevron" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="faq-answer px-5 pb-5 text-sm text-gray-400 hidden"><p>Free HF Spaces sleep after 48h inactivity. Upgrade to $5/month for 24/7 or deploy on any VPS. Messages queue and send when back online.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="py-20">
+  <div class="max-w-4xl mx-auto px-6 text-center">
+    <div class="bg-gradient-to-br from-dark-800 to-dark-700 border border-wa/20 rounded-3xl p-12 shadow-2xl">
+      <h2 class="text-3xl sm:text-4xl font-black mb-4">Stop Missing Orders.<br><span class="bg-gradient-to-r from-wa to-cyan-400 bg-clip-text text-transparent">Start Getting Them on WhatsApp.</span></h2>
+      <p class="text-gray-400 mb-8 max-w-lg mx-auto">Join 2,000+ store owners who never miss an order. Setup in 2 minutes. Pay once, use forever.</p>
+      <div class="flex flex-wrap justify-center gap-4 mb-8">
+        <a href="#pricing" class="px-8 py-4 rounded-xl bg-gradient-to-r from-wa to-wa-dark font-bold hover:shadow-xl hover:shadow-wa/30 transition-all hover:-translate-y-1">Get Pro — ₹1,499</a>
+        <a href="#trial" class="px-8 py-4 rounded-xl border border-white/10 font-semibold hover:bg-white/5 transition-all">Try Free Trial</a>
+      </div>
+      <div class="flex flex-wrap justify-center gap-6 text-xs text-gray-500">
+        <span>🔒 Secure Payment</span><span>💰 30-Day Refund</span><span>⚡ Instant Download</span><span>🛡️ Lifetime Updates</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer class="py-12 border-t border-white/5">
+  <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-8">
+    <div>
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-wa to-wa-dark flex items-center justify-center text-lg">💬</div>
+        <span class="font-bold">WhatsApp Order Notifier</span>
+      </div>
+      <p class="text-sm text-gray-500">Instant WhatsApp notifications for WooCommerce. Built for India, SEA & LATAM.</p>
+    </div>
+    <div>
+      <h4 class="font-semibold mb-3 text-sm">Product</h4>
+      <div class="flex flex-col gap-2 text-sm text-gray-400">
+        <a href="#features" class="hover:text-wa transition">Features</a>
+        <a href="#pricing" class="hover:text-wa transition">Pricing</a>
+        <a href="#how-it-works" class="hover:text-wa transition">How It Works</a>
+        <a href="#faq" class="hover:text-wa transition">FAQ</a>
+      </div>
+    </div>
+    <div>
+      <h4 class="font-semibold mb-3 text-sm">Support</h4>
+      <div class="flex flex-col gap-2 text-sm text-gray-400">
+        <a href="mailto:itsdevsarun@gmail.com" class="hover:text-wa transition">itsdevsarun@gmail.com</a>
+        <a href="https://wa.me/917654758443" class="hover:text-wa transition">WhatsApp: +91 7654758443</a>
+      </div>
+    </div>
+  </div>
+  <div class="max-w-6xl mx-auto px-6 mt-8 pt-8 border-t border-white/5 text-center text-xs text-gray-600">
+    &copy; 2024 WhatsApp Order Notifier. All rights reserved.
+  </div>
+</footer>
+
+<!-- WHATSAPP FLOATING WIDGET -->
+<div id="wa-widget" class="fixed bottom-6 right-6 z-50">
+  <!-- Trigger Button -->
+  <button id="wa-trigger" class="w-14 h-14 rounded-full bg-wa shadow-lg shadow-wa/30 flex items-center justify-center hover:scale-110 transition-transform">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </button>
+  <!-- Panel -->
+  <div id="wa-panel" class="hidden absolute bottom-20 right-0 w-80 bg-dark-800 border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
+    <div class="bg-wa p-4 flex items-center justify-between">
+      <h4 class="font-bold text-sm">💬 Chat with Us</h4>
+      <button id="wa-close" class="text-white/80 hover:text-white text-xl leading-none">&times;</button>
+    </div>
+    <div class="p-4">
+      <p class="text-xs text-gray-400 mb-4">Need help? Send us a message and we'll reply within minutes on WhatsApp.</p>
+      <form id="wa-form" class="space-y-3">
+        <div><label class="text-xs text-gray-400 mb-1 block">Name</label><input id="wa-name" type="text" required class="w-full px-3 py-2 bg-dark-700 border border-white/10 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-wa" placeholder="Your Name"></div>
+        <div><label class="text-xs text-gray-400 mb-1 block">Mobile No.</label><input id="wa-phone" type="tel" required class="w-full px-3 py-2 bg-dark-700 border border-white/10 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-wa" placeholder="+91 98765 43210"></div>
+        <div><label class="text-xs text-gray-400 mb-1 block">Message</label><textarea id="wa-msg" rows="3" required class="w-full px-3 py-2 bg-dark-700 border border-white/10 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-wa resize-none" placeholder="How can we help?"></textarea></div>
+        <button type="submit" class="w-full py-3 rounded-lg bg-wa font-semibold text-sm hover:bg-wa-dark transition">Send on WhatsApp →</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- JAVASCRIPT -->
+<script>
+// ============================================
+// CONFIGURATION — CHANGE THESE VALUES
+// ============================================
+const CONFIG = {
+  // Razorpay keys — Replace with YOUR keys
+  razorpay_key: 'rzp_test_XXXXXXXXXX',  // YOUR Razorpay Key ID
+  
+  // Product
+  product_name: 'WhatsApp Order Notifier Pro',
+  product_price: 149900, // in paise (₹1,499 = 149900 paise)
+  currency: 'INR',
+  
+  // Download URLs — Replace with YOUR server URLs where plugins are hosted
+  trial_download_url: 'https://your-server.com/downloads/whatsapp-order-notifier-trial.zip',
+  pro_download_url: 'https://your-server.com/downloads/whatsapp-order-notifier-pro.zip',
+  
+  // Support
+  whatsapp_number: '917654758443',
+  support_email: 'itsdevsarun@gmail.com',
+};
+
+// ============================================
+// RAZORPAY PAYMENT + AUTO DOWNLOAD
+// ============================================
+document.getElementById('btn-buy').addEventListener('click', function() {
+  const options = {
+    key: CONFIG.razorpay_key,
+    amount: CONFIG.product_price,
+    currency: CONFIG.currency,
+    name: CONFIG.product_name,
+    description: 'Lifetime License — One-time Payment',
+    image: 'https://cdn-icons-png.flaticon.com/512/3670/3670051.png',
+    handler: function(response) {
+      // Payment successful — Auto download Pro plugin
+      alert('🎉 Payment Successful! Your download will start automatically.');
+      window.location.href = CONFIG.pro_download_url;
+    },
+    prefill: {
+      email: '',
+      contact: ''
+    },
+    theme: {
+      color: '#25D366'
+    },
+    modal: {
+      ondismiss: function() {
+        // User closed payment modal
+      }
+    }
+  };
+  
+  const rzp = new Razorpay(options);
+  rzp.open();
+});
+
+// ============================================
+// TRIAL DOWNLOAD
+// ============================================
+document.getElementById('btn-trial').addEventListener('click', function() {
+  // Direct download trial version
+  window.location.href = CONFIG.trial_download_url;
+});
+
+// ============================================
+// WHATSAPP WIDGET
+// ============================================
+const waTrigger = document.getElementById('wa-trigger');
+const waPanel = document.getElementById('wa-panel');
+const waClose = document.getElementById('wa-close');
+const waForm = document.getElementById('wa-form');
+
+waTrigger.addEventListener('click', () => {
+  waPanel.classList.toggle('hidden');
+});
+
+waClose.addEventListener('click', () => {
+  waPanel.classList.add('hidden');
+});
+
+waForm.addEventListener('submit', function(e) {
+  e.preventDefault();
+  const name = document.getElementById('wa-name').value.trim();
+  const phone = document.getElementById('wa-phone').value.trim();
+  const msg = document.getElementById('wa-msg').value.trim();
+  
+  // Build WhatsApp message
+  const text = `*New Enquiry — WhatsApp Order Notifier*%0A%0A👤 Name: ${encodeURIComponent(name)}%0A📱 Phone: ${encodeURIComponent(phone)}%0A%0A💬 Message:%0A${encodeURIComponent(msg)}`;
+  
+  // Open WhatsApp with pre-filled message
+  window.open(`https://wa.me/${CONFIG.whatsapp_number}?text=${text}`, '_blank');
+  
+  // Reset form
+  waForm.reset();
+  waPanel.classList.add('hidden');
+});
+
+// ============================================
+// FAQ TOGGLE
+// ============================================
+document.querySelectorAll('.faq-item').forEach(item => {
+  const btn = item.querySelector('button');
+  const answer = item.querySelector('.faq-answer');
+  const chevron = item.querySelector('.faq-chevron');
+  
+  btn.addEventListener('click', () => {
+    const isOpen = !answer.classList.contains('hidden');
+    // Close all
+    document.querySelectorAll('.faq-answer').forEach(a => a.classList.add('hidden'));
+    document.querySelectorAll('.faq-chevron').forEach(c => c.style.transform = '');
+    // Toggle current
+    if (!isOpen) {
+      answer.classList.remove('hidden');
+      chevron.style.transform = 'rotate(180deg)';
+    }
+  });
+});
+
+// ============================================
+// NAVBAR SCROLL EFFECT
+// ============================================
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav');
+  if (window.scrollY > 50) {
+    nav.classList.add('shadow-lg');
+  } else {
+    nav.classList.remove('shadow-lg');
+  }
+});
+</script>
+
+<style>
+  /* FAQ open state */
+  .faq-item.open .faq-answer { display: block !important; }
+  .faq-item.open .faq-chevron { transform: rotate(180deg); }
+</style>
+</body>
+</html>
